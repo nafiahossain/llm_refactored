@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  agent:
+    build: .
+    container_name: tool-agent
+    volumes:
+      - .:/app
+      - /app/.venv
+    environment:
+      - PYTHONPATH=/app
+    command: python main.py "What is 12.5% of 243?"
