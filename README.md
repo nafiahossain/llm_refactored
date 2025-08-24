@@ -44,16 +44,14 @@ A robust, production-ready agent that intelligently uses different tools to answ
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd tool-using-agent
+git clone https://github.com/nafiahossain/llm_refactored.git
+cd llm_refactored
 
-# Option 1: Traditional setup
+# Environment Setup
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-
-# Option 2: Modern setup (recommended)
 pip install -e ".[dev]"
+
 ```
 
 ### Basic Usage
@@ -99,11 +97,7 @@ make lint          # Run linting checks
 
 # Run examples
 make run           # Single example
-make examples  # Multiple examples
-
-# # Docker
-# make docker-build  # Build container
-# make docker-run    # Run example in container
+make examples      # Multiple examples
 
 # Cleanup
 make clean         # Remove build artifacts
@@ -131,17 +125,21 @@ tool-using-agent/
 │       └── translator.py  # Language translation
 ├── tests/                 # Test suite
 │   ├── __init__.py
-│   ├── test_tools.py      # Tool unit tests
-│   ├── test_agent.py      # Agent tests
-│   ├── test_integration.py # End-to-end tests
-│   ├── test_schemas.py    # Data validation tests
-│   └── test_parser.py     # Response parsing tests
-├── data/                  # Data files
+│   ├── conftest.py   
+│   ├── test_agent.py          # Agent tests 
+│   ├── test_integration.py    # End-to-end tests
+│   ├── test_llm.py            # LLM tests
+│   ├── test_parser.py         # Response parsing tests   
+│   ├── test_schemas.py        # Data validation tests
+│   ├── test_tool_registry.py  # Tool registry tests
+│   └── test_tools.py          # Tool unit testss
+├── data/                 # Data files
 │   └── kb.json           # Knowledge base entries
+├── docker-compose.yml    # Docker compose file
+├── Dockerfile            # Container definition
 ├── main.py               # CLI entry point
 ├── Makefile              # Build automation
-├── pyproject.toml        # Modern Python project config
-├── Dockerfile            # Container definition
+├── pyproject.toml        # Project config
 └── requirements.txt      # Core dependencies
 ```
 
@@ -224,7 +222,7 @@ pytest tests/test_integration.py -v    # Integration tests
 pytest tests/test_agent.py -v          # Agent tests
 
 # Run with coverage
-pytest --cov=agent --cov-report=html
+pytest --cov=agent --cov-report=html --cov-report=term
 
 # Test specific functionality
 pytest -k "calculator" -v              # Only calculator tests
@@ -274,8 +272,8 @@ print(result)  # "30.0"
 result = agent.answer("Weather in Tokyo")  
 print(result)  # "22.0°C"
 
-result = agent.answer("Who is Grace Hopper?")
-print(result)  # "Grace Hopper was a computer programming pioneer..."
+result = agent.answer("Who is Ada Lovelace?")
+print(result)  # "Ada Lovelace was a 19th-century mathematician..."
 ```
 
 ### Direct Tool Usage
@@ -298,24 +296,6 @@ print(result.result)  # "hola"
 
 ## Configuration
 
-### Environment Variables
-
-```bash
-# Optional environment variables
-export PYTHONPATH=/path/to/project
-export PYTHONUNBUFFERED=1  # For Docker
-```
-
-### LLM Configuration
-
-```python
-# Use fake LLM (default, for development)
-agent = Agent(use_fake_llm=True)
-
-# Use real LLM (extend for production)
-agent = Agent(use_fake_llm=False)
-```
-
 ### Knowledge Base
 
 Edit `data/kb.json` to add new knowledge entries:
@@ -337,15 +317,10 @@ Edit `data/kb.json` to add new knowledge entries:
 ```
 pydantic>=2.0.0  # Data validation and settings management
 pytest>=7.0.0    # Testing framework
-```
-
-### Development Dependencies (`requirements-dev.txt`)
-```
 pytest-cov>=4.0.0  # Test coverage
 black>=23.0.0       # Code formatting
 isort>=5.0.0        # Import sorting
 flake8>=6.0.0       # Linting
-mypy>=1.0.0         # Type checking
 ```
 
 ### Installation Options
@@ -376,7 +351,7 @@ pip install -e ".[lint]"
 
 ### Test Coverage
 
-Current test coverage: **95%+**
+Current test coverage: **97%+**
 
 ```bash
 # Generate coverage report
@@ -431,7 +406,6 @@ All tool inputs are validated:
 
 - **Calculator**: Prevents code injection via `eval()`
 - **File Operations**: Proper error handling for missing files
-- **Network**: Graceful handling of connection issues (when using real APIs)
 
 ## Performance
 
@@ -441,13 +415,6 @@ All tool inputs are validated:
 - **Error Recovery**: System continues with partial failures
 - **Type Safety**: Pydantic validation prevents runtime errors
 - **Resource Management**: Proper cleanup and memory management
-
-### Scalability Considerations
-
-- **Async Ready**: Architecture supports async tool execution
-- **Caching**: Can be extended with result caching
-- **Load Balancing**: Multiple agent instances supported
-- **Monitoring**: Structured logging for observability
 
 ## 📈 Future Enhancements
 
@@ -487,7 +454,8 @@ make setup
 pip install -e ".[dev]"
 
 # Make changes and test
-make check  # Run all quality checks
+make fmt    # Format code
+make lint   # Check for issues
 make test   # Run tests
 
 # Before committing
