@@ -229,7 +229,7 @@ pytest -k "calculator" -v              # Only calculator tests
 pytest -k "integration" -v             # Only integration tests
 ```
 
-## 🐳 Docker Usage
+## Docker Usage
 
 ### Basic Docker Commands
 
@@ -416,7 +416,7 @@ All tool inputs are validated:
 - **Type Safety**: Pydantic validation prevents runtime errors
 - **Resource Management**: Proper cleanup and memory management
 
-## 📈 Future Enhancements
+## Future Enhancements
 
 Potential areas for extension:
 
