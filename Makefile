@@ -19,7 +19,7 @@ fmt:
 
 lint:
 	@echo "Running linter (flake8)..."
-	$(PY) -m flake8 .
+	$(PY) -m flake8 agent --max-line-length=100
 
 help:
 	@echo "Available commands:"

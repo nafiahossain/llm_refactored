@@ -1,5 +1,3 @@
-import pytest
-
 from agent.parser import ResponseParser
 from agent.schemas import ToolPlan, ToolType
 
@@ -61,3 +59,13 @@ class TestResponseParser:
             result = ResponseParser.parse_response(response)
         assert result is None
         assert "Error parsing dict response" in caplog.text
+
+    def test_parse_structured_invalid_tool(self, caplog):
+        response = "TOOL:invalidtool PARAM=123"
+        with caplog.at_level("WARNING"):
+            result = ResponseParser._try_parse_structured(response)
+            assert result is None
+            assert any(
+                "Invalid tool type in structured format: invalidtool" in m
+                for m in caplog.messages
+            )

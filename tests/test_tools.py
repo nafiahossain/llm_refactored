@@ -1,3 +1,5 @@
+import pytest
+
 from agent.schemas import ToolResult
 from agent.tools.calculator import CalculatorTool
 from agent.tools.knowledge_base import KnowledgeBaseTool
@@ -32,6 +34,10 @@ class TestCalculatorTool:
     def test_unsafe_expression(self):
         result = self.tool.execute({"expr": "__import__('os').system('ls')"})
         assert not result.success
+
+    def test_calculate_percentage_invalid_expression(self):
+        with pytest.raises(ValueError, match="Invalid percentage expression"):
+            self.tool._calculate_percentage("abc% of xyz")
 
 
 class TestWeatherTool:

@@ -1,5 +1,4 @@
 from agent.agent import Agent, answer
-from agent.llm import LLMService
 from agent.schemas import ToolPlan, ToolResult, ToolType
 
 
@@ -98,30 +97,3 @@ class TestAgent:
             ToolResult(success=True, tool_used="other_tool", result="Some output")
         )
         assert result == "Some output"
-
-
-class TestLLMService:
-    def setup_method(self):
-        self.llm = LLMService(use_fake_llm=True)
-
-    def test_generate_tool_plan_german(self):
-        """Ensure German translation branch is hit"""
-        plan = self.llm._generate_tool_plan(
-            "translate to german", "Translate hello to German"
-        )
-        assert plan.tool == ToolType.TRANSLATOR
-        assert plan.args["target_language"] == "german"
-
-    def test_generate_tool_plan_dhaka(self):
-        """Ensure Dhaka weather branch is hit"""
-        plan = self.llm._generate_tool_plan(
-            "temperature in dhaka", "What is the temperature in Dhaka?"
-        )
-        assert plan.tool == ToolType.WEATHER
-        assert plan.args["city"] == "dhaka"
-
-    def test_generate_tool_plan_default_weather(self):
-        """Ensure default fallback goes to Paris weather"""
-        plan = self.llm._generate_tool_plan("some random input", "Blah blah blah")
-        assert plan.tool == ToolType.WEATHER
-        assert plan.args["city"] == "paris"

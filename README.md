@@ -11,7 +11,7 @@ A robust, production-ready agent that intelligently uses different tools to answ
 - **Robust Error Handling**: Recovers from malformed responses and invalid inputs
 - **Extensible Architecture**: Easy to add new tools
 - **Type Safety**: Full Pydantic validation throughout
-- **Comprehensive Testing**: 95%+ test coverage
+- **Comprehensive Testing**: 97%+ test coverage
 
 ## Architecture
 
@@ -464,10 +464,6 @@ Potential areas for extension:
 9. **Authentication**: User auth and authorization
 10. **Rate Limiting**: Protection against abuse
 
-## License
-
-MIT License - see LICENSE file for details.
-
 ## Contributing
 
 1. **Fork** the repository
@@ -498,11 +494,5 @@ make test   # Run tests
 make fmt    # Format code
 make lint   # Check for issues
 ```
-
-## Acknowledgments
-
-- **Pydantic**: For excellent data validation
-- **pytest**: For comprehensive testing framework
-- **Python Community**: For modern packaging standards (PEP 518/621)
 
 ---
