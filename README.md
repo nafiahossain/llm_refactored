@@ -315,9 +315,9 @@ Edit `data/kb.json` to add new knowledge entries:
 
 ### Core Dependencies (`requirements.txt`)
 ```
-pydantic>=2.0.0  # Data validation and settings management
-pytest>=7.0.0    # Testing framework
-pytest-cov>=4.0.0  # Test coverage
+pydantic>=2.0.0     # Data validation and settings management
+pytest>=7.0.0       # Testing framework
+pytest-cov>=4.0.0   # Test coverage
 black>=23.0.0       # Code formatting
 isort>=5.0.0        # Import sorting
 flake8>=6.0.0       # Linting
@@ -365,7 +365,7 @@ open htmlcov/index.html
 
 The project includes GitHub Actions workflow for:
 - Multi-Python version testing (3.10, 3.11, 3.12)
-- Code quality checks (black, isort, flake8, mypy)
+- Code quality checks (black, isort, flake8)
 - Test coverage reporting
 - Docker image building and testing
 
@@ -450,7 +450,8 @@ git clone https://github.com/nafiahossain/llm_refactored.git
 cd llm_refactored
 
 # Setup development environment
-make setup
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
 
 # Make changes and test
