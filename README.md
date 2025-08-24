@@ -109,7 +109,7 @@ make examples  # Multiple examples
 make clean         # Remove build artifacts
 ```
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 

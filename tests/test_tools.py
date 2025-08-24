@@ -1,3 +1,4 @@
+from agent.schemas import ToolResult
 from agent.tools.calculator import CalculatorTool
 from agent.tools.knowledge_base import KnowledgeBaseTool
 from agent.tools.translator import TranslatorTool
@@ -56,6 +57,25 @@ class TestWeatherTool:
         result = self.tool.execute({})
         assert not result.success
 
+    def test_execute_handles_exception(self, monkeypatch):
+        tool = WeatherTool()
+
+        def raise_exception(city):
+            raise RuntimeError("Simulated weather failure")
+
+        monkeypatch.setattr(tool, "_get_temperature", raise_exception)
+
+        args = {"city": "Paris"}
+        result = tool.execute(args)
+
+        assert isinstance(result, ToolResult)
+        assert result.success is False
+        assert result.result == ""
+        assert result.error.startswith(
+            "Weather lookup error: Simulated weather failure"
+        )
+        assert result.tool_used == tool.name
+
 
 class TestKnowledgeBaseTool:
     def setup_method(self):
@@ -78,6 +98,22 @@ class TestKnowledgeBaseTool:
     def test_missing_args(self):
         result = self.tool.execute({})
         assert not result.success
+
+    def test_execute_handles_exception(self, monkeypatch):
+        tool = KnowledgeBaseTool()
+
+        def raise_exception(query):
+            raise RuntimeError("Simulated failure")
+
+        monkeypatch.setattr(tool, "_lookup", raise_exception)
+        args = {"q": "test"}
+        result = tool.execute(args)
+
+        assert isinstance(result, ToolResult)
+        assert result.success is False
+        assert result.result == ""
+        assert result.error.startswith("Knowledge base error: Simulated failure")
+        assert result.tool_used == tool.name
 
 
 class TestTranslatorTool:
@@ -108,3 +144,22 @@ class TestTranslatorTool:
     def test_invalid_args(self):
         result = self.tool.execute({"text": 123, "target_language": "spanish"})
         assert not result.success
+
+    def test_execute_handles_exception(self, monkeypatch):
+        tool = TranslatorTool()
+
+        def raise_exception(text, target_language):
+            raise RuntimeError("Simulated translation failure")
+
+        monkeypatch.setattr(tool, "_translate", raise_exception)
+
+        args = {"text": "hello", "target_language": "spanish"}
+        result = tool.execute(args)
+
+        assert isinstance(result, ToolResult)
+        assert result.success is False
+        assert result.result == ""
+        assert result.error.startswith(
+            "Translation error: Simulated translation failure"
+        )
+        assert result.tool_used == tool.name

@@ -17,8 +17,6 @@ class LLMService:
         """Call LLM and return either a direct response or a tool plan"""
         if self.use_fake_llm:
             return self._fake_llm_call(prompt)
-        # else:
-        #     return self._real_llm_call(prompt)
 
     def _fake_llm_call(self, prompt: str) -> Optional[Union[str, ToolPlan]]:
         """Fake LLM that simulates real-world behavior including errors"""
@@ -94,7 +92,3 @@ class LLMService:
         if "ada lovelace" in p:
             return "Ada Lovelace was a 19th-century mathematician and early computing pioneer."
         return f"I think you are asking about: {prompt[:60]}"
-
-    # def _real_llm_call(self, prompt: str) -> Optional[Union[str, ToolPlan]]:
-    #     """Placeholder for real LLM integration"""
-    #     return self._fake_llm_call(prompt)

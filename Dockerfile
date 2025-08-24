@@ -15,6 +15,7 @@ COPY agent/ ./agent/
 COPY tests/ ./tests/
 COPY data/ ./data/
 COPY main.py .
+COPY pyproject.toml .
 
 RUN pip install -e .
 

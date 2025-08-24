@@ -1,3 +1,5 @@
+import pytest
+
 from agent.parser import ResponseParser
 from agent.schemas import ToolPlan, ToolType
 
@@ -41,3 +43,21 @@ class TestResponseParser:
         result = ResponseParser.parse_response(response)
         assert isinstance(result, ToolPlan)
         assert result.tool == ToolType.WEATHER
+
+    def test_parse_response_invalid_type(self):
+        result = ResponseParser.parse_response(12345)
+        assert result is None
+
+    def test_parse_dict_response_invalid_tool(self, caplog):
+        response = {"tool": "invalid_tool", "args": {"x": 1}}
+        with caplog.at_level("WARNING"):
+            result = ResponseParser.parse_response(response)
+        assert result is None
+        assert "Invalid tool type" in caplog.text
+
+    def test_parse_dict_response_exception(self, caplog):
+        response = {"tool": "calc", "args": None}
+        with caplog.at_level("WARNING"):
+            result = ResponseParser.parse_response(response)
+        assert result is None
+        assert "Error parsing dict response" in caplog.text

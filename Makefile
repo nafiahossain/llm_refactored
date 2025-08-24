@@ -1,4 +1,4 @@
-PY=python
+PY=python3
 PIP=pip
 
 .PHONY: setup test run fmt clean install help

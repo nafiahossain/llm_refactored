@@ -50,7 +50,7 @@ class KnowledgeBaseTool(BaseTool):
                     return item.get("summary", "")
 
             return "No entry found."
-        except FileNotFoundError:
+        except FileNotFoundError:  # pragma: no cover
             return "Knowledge base not found."
-        except json.JSONDecodeError:
+        except json.JSONDecodeError:  # pragma: no cover
             return "Knowledge base format error."

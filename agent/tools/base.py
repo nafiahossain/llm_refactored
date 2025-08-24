@@ -9,16 +9,16 @@ class BaseTool(ABC):
 
     @property
     @abstractmethod
-    def name(self) -> str:
+    def name(self) -> str:  # pragma: no cover
         """Tool name"""
         pass
 
     @abstractmethod
-    def execute(self, args: Dict[str, Any]) -> ToolResult:
+    def execute(self, args: Dict[str, Any]) -> ToolResult:  # pragma: no cover
         """Execute the tool with given arguments"""
         pass
 
     @abstractmethod
-    def validate_args(self, args: Dict[str, Any]) -> bool:
+    def validate_args(self, args: Dict[str, Any]) -> bool:  # pragma: no cover
         """Validate tool arguments"""
         pass
